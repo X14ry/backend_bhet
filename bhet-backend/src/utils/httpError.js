@@ -6,9 +6,16 @@ class HttpError extends Error {
   }
 }
 const badRequest = (m, d) => new HttpError(400, m, d);
-const unauthorized = (m = 'Authentication required') => new HttpError(401, m);
-const forbidden = (m = 'Not allowed') => new HttpError(403, m);
-const notFound = (m = 'Not found') => new HttpError(404, m);
+const unauthorized = (m = "Authentication required") => new HttpError(401, m);
+const forbidden = (m = "Not allowed") => new HttpError(403, m);
+const notFound = (m = "Not found") => new HttpError(404, m);
 const conflict = (m) => new HttpError(409, m);
 
-module.exports = { HttpError, badRequest, unauthorized, forbidden, notFound, conflict };
+module.exports = {
+  HttpError,
+  badRequest,
+  unauthorized,
+  forbidden,
+  notFound,
+  conflict,
+};

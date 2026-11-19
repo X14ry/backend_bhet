@@ -1,5 +1,5 @@
-const mysql = require('mysql2/promise');
-const config = require('./config');
+const mysql = require("mysql2/promise");
+const config = require("./config");
 
 const pool = mysql.createPool({
   host: config.db.host,
@@ -9,8 +9,8 @@ const pool = mysql.createPool({
   database: config.db.database,
   waitForConnections: true,
   connectionLimit: 10,
-  charset: 'utf8mb4',
-  timezone: 'Z',
+  charset: "utf8mb4",
+  timezone: "Z",
   dateStrings: true,
 });
 
@@ -29,7 +29,11 @@ async function transaction(fn) {
     await conn.commit();
     return result;
   } catch (err) {
-    try { await conn.rollback(); } catch (_) { /* ignore */ }
+    try {
+      await conn.rollback();
+    } catch (_) {
+      /* ignore */
+    }
     throw err;
   } finally {
     conn.release();

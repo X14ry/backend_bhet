@@ -6,10 +6,12 @@ public-venue meetup planner, trusted-contact sharing, hide/pause, unmatch, block
 is stored for users - never exact coordinates.
 
 ## Requirements
+
 - Node.js 18+ (tested on 22)
 - MySQL 8.0+
 
 ## Setup
+
 ```bash
 npm install
 cp .env.example .env        # then edit DB_PASSWORD and JWT_SECRET
@@ -17,6 +19,7 @@ npm run db:migrate          # creates database `bhet_db`, all tables, interests 
 npm run db:seed             # optional: fictional demo users (password: Demo12345)
 npm start                   # http://localhost:3000   (npm run dev = auto-restart)
 ```
+
 `npm run db:reset` drops and rebuilds the database (and re-seeds demo users).
 Test everything end to end (server running, fresh DB): `npm run db:reset` then `npm run test:smoke`.
 
@@ -26,22 +29,24 @@ Demo accounts: `mina@`, `sita@`, `rohan@` (friendship); `aarav@`, `priya@`, `kir
 **Common error:** `ER_NOT_SUPPORTED_AUTH_MODE` / "Access denied" -> check DB_USER / DB_PASSWORD in `.env`.
 
 ## Database (database/schema.sql)
-| Table | Purpose |
-|---|---|
-| users | account, email, bcrypt hash, date of birth (18+), role, status |
-| profiles | display name, bio, photo URL, **intention**, **broad_area** |
-| interests / user_interests | selectable interests (chips) and each user's choices |
-| discovery_preferences | area, age range, pause discovery |
-| likes | like/pass decision per ordered pair |
-| connections | mutual match, ordered pair (user_one < user_two), status active/unmatched/blocked, shared-interest summary |
-| messages | in-app chat with read receipts |
-| venues | public meetup venues only |
-| meetup_plans | proposed/accepted/declined/cancelled plans, trusted-contact sharing flag |
-| trusted_contacts | up to 5 per user |
-| blocks | blocker -> blocked |
-| reports | reports with reason + status; kept if account is deleted |
+
+| Table                      | Purpose                                                                                                    |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| users                      | account, email, bcrypt hash, date of birth (18+), role, status                                             |
+| profiles                   | display name, bio, photo URL, **intention**, **broad_area**                                                |
+| interests / user_interests | selectable interests (chips) and each user's choices                                                       |
+| discovery_preferences      | area, age range, pause discovery                                                                           |
+| likes                      | like/pass decision per ordered pair                                                                        |
+| connections                | mutual match, ordered pair (user_one < user_two), status active/unmatched/blocked, shared-interest summary |
+| messages                   | in-app chat with read receipts                                                                             |
+| venues                     | public meetup venues only                                                                                  |
+| meetup_plans               | proposed/accepted/declined/cancelled plans, trusted-contact sharing flag                                   |
+| trusted_contacts           | up to 5 per user                                                                                           |
+| blocks                     | blocker -> blocked                                                                                         |
+| reports                    | reports with reason + status; kept if account is deleted                                                   |
 
 ## API (all JSON; send `Authorization: Bearer <token>` except register/login)
+
 **Auth** - `POST /api/auth/register` `{email,password,dateOfBirth:"YYYY-MM-DD",confirmAdult:true}` ·
 `POST /api/auth/login` · `GET /api/auth/me` · `DELETE /api/auth/account` `{password}`
 
@@ -67,11 +72,13 @@ Demo accounts: `mina@`, `sita@`, `rohan@` (friendship); `aarav@`, `priya@`, `kir
 Errors always look like `{ "error": "message", "details": [...] }` with a proper HTTP status (400, 401, 403, 404, 409, 500).
 
 ## Flutter notes
+
 - Android emulator reaches your PC at `http://10.0.2.2:3000`; iOS simulator at `http://localhost:3000`.
 - Store the JWT securely (e.g. `flutter_secure_storage`) and send it in the `Authorization` header.
 - Chat uses simple polling (`GET .../messages`). WebSockets are left as future work.
 
 ## Scope / limits (matches the report)
+
 Prototype only: no identity or age verification (the 18+ check is self-declared date of birth), no live moderation,
 no payments, no live tracking. Before any real use you would still need a threat model, HTTPS, refresh tokens,
 email verification, push notifications, and a data-retention policy.

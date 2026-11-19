@@ -1,14 +1,18 @@
-const app = require('./app');
-const config = require('./config');
-const { pool } = require('./db');
+const app = require("./app");
+const config = require("./config");
+const { pool } = require("./db");
 
 async function start() {
   try {
-    await pool.query('SELECT 1');
-    console.log(`MySQL connected (${config.db.host}:${config.db.port}/${config.db.database})`);
+    await pool.query("SELECT 1");
+    console.log(
+      `MySQL connected (${config.db.host}:${config.db.port}/${config.db.database})`,
+    );
   } catch (err) {
-    console.error('Could not connect to MySQL:', err.message);
-    console.error('Check your .env settings and run "npm run db:migrate" first.');
+    console.error("Could not connect to MySQL:", err.message);
+    console.error(
+      'Check your .env settings and run "npm run db:migrate" first.',
+    );
     process.exit(1);
   }
 
@@ -17,10 +21,13 @@ async function start() {
   });
 
   const shutdown = () => {
-    server.close(async () => { await pool.end(); process.exit(0); });
+    server.close(async () => {
+      await pool.end();
+      process.exit(0);
+    });
   };
-  process.on('SIGINT', shutdown);
-  process.on('SIGTERM', shutdown);
+  process.on("SIGINT", shutdown);
+  process.on("SIGTERM", shutdown);
 }
 
 start();
